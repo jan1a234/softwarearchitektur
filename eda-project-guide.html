@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDA Projekt - Choreografie vs. Orchestrierung | HTW Saar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .header-section {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-radius: 15px;
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .meta-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #764ba2;
+            font-weight: 600;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e0e0e0;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+            position: relative;
+            top: 2px;
+        }
+        
+        .tab:hover {
+            color: #667eea;
+        }
+        
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            font-weight: 600;
+        }
+        
+        .content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        
+        .content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        
+        .section h3 {
+            color: #764ba2;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+        
+        .timeline-item {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -30px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background: #667eea;
+            border-radius: 50%;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 17px;
+            width: 1px;
+            height: calc(100% + 10px);
+            background: #ddd;
+        }
+        
+        .timeline-item:last-child::after {
+            display: none;
+        }
+        
+        .task-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .task-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .task-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .task-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .research-query {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-left: 3px solid #764ba2;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .research-query:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .research-query strong {
+            color: #764ba2;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        ul {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, #ffd900 0%, #ffd900 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 40%;
+            background-position: 0 60%;
+            padding: 2px 4px;
+        }
+        
+        .team-member {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #667eea;
+            color: white;
+            border-radius: 20px;
+            margin: 5px;
+            font-size: 0.9em;
+        }
+        
+        .deadline {
+            background: #ff6b6b;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        
+        .copy-btn {
+            background: #764ba2;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s;
+            float: right;
+        }
+        
+        .copy-btn:hover {
+            background: #5a3785;
+            transform: scale(1.05);
+        }
+        
+        .copy-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .evaluation-criteria {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .criteria-grid {
+            display: grid;
+            grid-template-columns: 1fr 3fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .criteria-header {
+            font-weight: bold;
+            color: #667eea;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 5px;
+        }
+        
+        .criteria-item {
+            padding: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .weight {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .warning-box strong {
+            color: #856404;
+        }
+        
+        .success-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .success-box strong {
+            color: #155724;
+        }
+        
+        .code-example {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        
+        .architecture-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .arch-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .arch-card.choreography {
+            border-color: #667eea;
+        }
+        
+        .arch-card.orchestration {
+            border-color: #764ba2;
+        }
+        
+        .arch-card h4 {
+            margin-bottom: 15px;
+        }
+        
+        .pro-con-list {
+            list-style: none;
+            margin-left: 0;
+        }
+        
+        .pro-con-list li {
+            padding: 5px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .pro-con-list li.pro::before {
+            content: '✓';
+            color: #28a745;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+        
+        .pro-con-list li.con::before {
+            content: '✗';
+            color: #dc3545;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+        
+        .checklist {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        .checklist-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .checklist-item input[type="checkbox"] {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .checklist-item label {
+            cursor: pointer;
+            flex: 1;
+        }
+        
+        .checklist-item.completed {
+            opacity: 0.6;
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-section">
+            <h1>🎭 Thema 6: Choreografie vs. Orchestrierung</h1>
+            <p class="subtitle">Event-Driven Architectures - Fallstudie für Software-Architektur</p>
+            <div class="meta-info">
+                <div class="meta-item">📚 HTW Saar</div>
+                <div class="meta-item">👨‍🏫 Prof. Dr. Markus Esch</div>
+                <div class="meta-item">❄️ Wintersemester 2025/2026</div>
+                <div class="meta-item">👥 3 Personen</div>
+            </div>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('overview')">📋 Überblick</button>
+            <button class="tab" onclick="showTab('requirements')">📑 Anforderungen</button>
+            <button class="tab" onclick="showTab('evaluation')">📊 Bewertungskriterien</button>
+            <button class="tab" onclick="showTab('timeline')">⏱️ Zeitplan</button>
+            <button class="tab" onclick="showTab('structure')">📚 Inhaltsverzeichnis</button>
+            <button class="tab" onclick="showTab('research')">🔍 Recherche-Queries</button>
+            <button class="tab" onclick="showTab('implementation')">💻 Implementierung</button>
+            <button class="tab" onclick="showTab('interactive')">🎮 Interaktives Element</button>
+            <button class="tab" onclick="showTab('checklist')">✅ Checkliste</button>
+        </div>
+        
+        <!-- Überblick Tab -->
+        <div id="overview" class="content active">
+            <div class="section">
+                <h2>Projektziel gemäß Aufgabenstellung</h2>
+                <div class="warning-box">
+                    <strong>Offizielle Aufgabenstellung:</strong>
+                    <p>"In dieser Fallstudie werden Choreografie und Orchestrierung in Event-Driven Architectures verglichen. Zu diesem Zweck werden zwei funktional identische Prototypen entwickelt und evaluiert. Die Evaluation erfolgt sowohl qualitativ als auch quantitativ (z. B. anhand von Durchsatz oder Latenz)."</p>
+                </div>
+                
+                <h3>Zu untersuchende Aspekte (verpflichtend):</h3>
+                <ul>
+                    <li><strong>Änderbarkeit:</strong> Wie leicht lassen sich neue Services hinzufügen oder bestehende modifizieren?</li>
+                    <li><strong>Wartbarkeit:</strong> Wie gut ist das System zu verstehen und zu pflegen?</li>
+                    <li><strong>Verfügbarkeit:</strong> Wie verhält sich das System bei Ausfällen einzelner Komponenten?</li>
+                    <li><strong>Fehlertoleranz:</strong> Wie robust ist das System gegenüber Fehlern?</li>
+                    <li><strong>Erweiterbarkeit:</strong> Wie einfach können neue Features integriert werden?</li>
+                </ul>
+                
+                <div class="success-box">
+                    <strong>Projektspezifische Ergänzungen:</strong>
+                    <p>Diese Liste soll projektspezifisch ergänzt werden. Zusätzliche Aspekte könnten sein: Performance, Skalierbarkeit, Monitoring & Observability, Konsistenz, Komplexität.</p>
+                </div>
+            </div>
+            
+            <div class="architecture-comparison">
+                <div class="arch-card choreography">
+                    <h4 style="color: #667eea;">🎼 Choreografie</h4>
+                    <ul class="pro-con-list">
+                        <li class="pro">Dezentralisierte Kontrolle</li>
+                        <li class="pro">Lose Kopplung</li>
+                        <li class="pro">Hohe Autonomie der Services</li>
+                        <li class="pro">Bessere Skalierbarkeit</li>
+                        <li class="con">Schwieriger zu überwachen</li>
+                        <li class="con">Komplexe Fehlerbehandlung</li>
+                    </ul>
+                </div>
+                <div class="arch-card orchestration">
+                    <h4 style="color: #764ba2;">🎺 Orchestrierung</h4>
+                    <ul class="pro-con-list">
+                        <li class="pro">Zentrale Kontrolle</li>
+                        <li class="pro">Einfaches Monitoring</li>
+                        <li class="pro">Klare Workflow-Definition</li>
+                        <li class="pro">Einfache Fehlerbehandlung</li>
+                        <li class="con">Single Point of Failure</li>
+                        <li class="con">Höhere Kopplung</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Anforderungen Tab -->
+        <div id="requirements" class="content">
+            <div class="section">
+                <h2>🎯 Projektanforderungen</h2>
+                
+                <h3>1. Zwei funktional identische Prototypen</h3>
+                <ul>
+                    <li>Ein Prototyp mit <strong>Choreografie-Pattern</strong></li>
+                    <li>Ein Prototyp mit <strong>Orchestrierungs-Pattern</strong></li>
+                    <li>Beide müssen die <strong>exakt gleiche Funktionalität</strong> bieten</li>
+                    <li>Verwendung realistischer Use Cases (z.B. E-Commerce Bestellprozess)</li>
+                </ul>
+                
+                <h3>2. Qualitative Evaluation</h3>
+                <ul>
+                    <li>Architekturanalyse und Bewertung</li>
+                    <li>Code-Qualität und Struktur</li>
+                    <li>Wartbarkeit und Verständlichkeit</li>
+                    <li>Dokumentation der Design-Entscheidungen</li>
+                </ul>
+                
+                <h3>3. Quantitative Evaluation</h3>
+                <ul>
+                    <li><strong>Durchsatz:</strong> Requests pro Sekunde</li>
+                    <li><strong>Latenz:</strong> Response-Zeiten (P50, P95, P99)</li>
+                    <li><strong>Ressourcenverbrauch:</strong> CPU, Memory</li>
+                    <li><strong>Skalierungsverhalten:</strong> Performance unter Last</li>
+                    <li><strong>Recovery-Zeit:</strong> Nach Service-Ausfällen</li>
+                </ul>
+                
+                <h3>4. Dokumentation</h3>
+                <div class="warning-box">
+                    <strong>Wichtig:</strong> Die Ausarbeitung muss alle Bewertungskriterien erfüllen:
+                    <ul>
+                        <li>Vollständige Erfüllung der Zielvorgaben</li>
+                        <li>Logischer Aufbau und klare Struktur</li>
+                        <li>Gut recherchierte und dokumentierte Quellen</li>
+                        <li>Sprachlich korrekt (Fachsprache)</li>
+                        <li>Konsistentes Layout mit guten Abbildungen</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bewertungskriterien Tab -->
+        <div id="evaluation" class="content">
+            <div class="section">
+                <h2>📊 Offizielle Bewertungskriterien</h2>
+                
+                <div class="evaluation-criteria">
+                    <h3>1. Ausarbeitung (Dokumentation)</h3>
+                    <div class="criteria-grid">
+                        <div class="criteria-header">Kriterium</div>
+                        <div class="criteria-header">Anforderung</div>
+                        <div class="criteria-header">Gewicht</div>
+                        <div class="criteria-item">Zielvorgaben</div>
+                        <div class="criteria-item">Voll erfüllt, teilweise übertroffen</div>
+                        <div class="criteria-item weight">100%</div>
+                        <div class="criteria-item">Gliederung/Aufbau</div>
+                        <div class="criteria-item">Logischer Aufbau, klar strukturiert</div>
+                        <div class="criteria-item weight">100%</div>
+                        <div class="criteria-item">Recherche und Quellen</div>
+                        <div class="criteria-item">Gut recherchierte und dokumentierte Quellen</div>
+                        <div class="criteria-item weight">100%</div>
+                        <div class="criteria-item">Qualität des Inhalts</div>
+                        <div class="criteria-item">Fallstudie gut und nachvollziehbar dargestellt, Evaluation schlüssig</div>
+                        <div class="criteria-item weight">100%</div>
+                        <div class="criteria-item">Vollständigkeit</div>
+                        <div class="criteria-item">Vollständig und umfänglich</div>
+                        <div class="criteria-item weight">100%</div>
+                        <div class="criteria-item">Äußere Form</div>
+                        <div class="criteria-item">Korrektes und sauberes Layout</div>
+                        <div class="criteria-item weight">100%</div>
+                        <div class="criteria-item">Sprache</div>
+                        <div class="criteria-item">Sprachlich korrekt, Fachsprache</div>
+                        <div class="criteria-item weight">100%</div>
+                    </div>
+                </div>
+                
+                <div class="evaluation-criteria">
+                    <h3>2. Fallstudie (Implementation)</h3>
+                    <div class="warning-box">
+                        <strong>Kritisch für die Bewertung:</strong>
+                        <ul>
+                            <li>Die Fallstudie muss das Thema gut darstellen</li>
+                            <li>Vor- und Nachteile sowie Unterschiede müssen klar erkennbar sein</li>
+                            <li>Der Code muss qualitativ und quantitativ hochwertig sein</li>
+                            <li>Der Code muss gut strukturiert und verständlich sein</li>
+                            <li>Der Code muss vollständig funktionsfähig sein</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="evaluation-criteria">
+                    <h3>3. Präsentation</h3>
+                    <ul>
+                        <li><strong>Konsistenz, Inhalt und Aufbau:</strong> Logischer Aufbau, klar strukturiert</li>
+                        <li><strong>Vorführung:</strong> Sicherer, abwechslungsreicher Vortrag</li>
+                        <li><strong>Foliengestaltung:</strong> Übersichtlich, gut verständlich</li>
+                        <li><strong>Fragen:</strong> Umfängliche und korrekte Beantwortung</li>
+                        <li><strong>Zeit:</strong> Rahmen einhalten</li>
+                    </ul>
+                </div>
+                
+                <div class="evaluation-criteria">
+                    <h3>4. Peer Review</h3>
+                    <p>Gute Kommentierung, die die Kernaspekte der Arbeit gut einschätzt und intensive Auseinandersetzung zeigt.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Zeitplan Tab -->
+        <div id="timeline" class="content">
+            <div class="section">
+                <h2>⏱️ Detaillierter Zeitplan (6 Wochen)</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <strong>Woche 1: Recherche & Grundlagen</strong>
+                        <p>• Literaturrecherche zu beiden Patterns</p>
+                        <p>• Analyse von Industriebeispielen (Netflix, Uber, Amazon)</p>
+                        <p>• Technologie-Stack Auswahl (Kafka/RabbitMQ, Docker, Kubernetes)</p>
+                        <p>• Use Case Definition (E-Commerce oder Banking)</p>
+                    </div>
+                    <div class="timeline-item">
+                        <strong>Woche 2: Architektur-Design</strong>
+                        <p>• Detaillierte Architektur-Diagramme für beide Ansätze</p>
+                        <p>• Event-Flow Dokumentation</p>
+                        <p>• API-Spezifikationen</p>
+                        <p>• Datenmodell-Definition</p>
+                    </div>
+                    <div class="timeline-item">
+                        <strong>Woche 3: Choreografie-Implementierung</strong>
+                        <p>• Service-Implementierung (Order, Payment, Inventory, Shipping)</p>
+                        <p>• Event-Bus Setup (Kafka/RabbitMQ)</p>
+                        <p>• Event-Handler Implementierung</p>
+                        <p>• Fehlerbehandlung und Retry-Logic</p>
+                    </div>
+                    <div class="timeline-item">
+                        <strong>Woche 4: Orchestrierungs-Implementierung</strong>
+                        <p>• Orchestrator-Service (Camunda/Temporal)</p>
+                        <p>• Workflow-Definition</p>
+                        <p>• Service-Integration</p>
+                        <p>• Kompensation und Rollback</p>
+                    </div>
+                    <div class="timeline-item">
+                        <strong>Woche 5: Evaluation & Tests</strong>
+                        <p>• Performance-Tests (JMeter/K6)</p>
+                        <p>• Chaos Engineering (Service-Ausfälle simulieren)</p>
+                        <p>• Metriken-Sammlung (Prometheus/Grafana)</p>
+                        <p>• Vergleichende Analyse</p>
+                    </div>
+                    <div class="timeline-item">
+                        <strong>Woche 6: Dokumentation & Präsentation</strong>
+                        <p>• Ausarbeitung finalisieren</p>
+                        <p>• Präsentation erstellen</p>
+                        <p>• Demo vorbereiten</p>
+                        <p>• Peer Review durchführen</p>
+                    </div>
+                </div>
+                
+                <div class="deadline">
+                    ⚠️ DEADLINE: Ende Woche 6 - Alle Komponenten müssen fertiggestellt sein!
+                </div>
+            </div>
+        </div>
+        
+        <!-- Inhaltsverzeichnis Tab -->
+        <div id="structure" class="content">
+            <div class="section">
+                <h2>📖 Detailliertes Inhaltsverzeichnis</h2>
+                
+                <h3>1. Executive Summary (2-3 Seiten)</h3>
+                <ul>
+                    <li>1.1 Problemstellung und Motivation</li>
+                    <li>1.2 Zielsetzung der Fallstudie</li>
+                    <li>1.3 Methodologie und Vorgehen</li>
+                    <li>1.4 Hauptergebnisse im Überblick</li>
+                </ul>
+                
+                <h3>2. Theoretische Grundlagen (8-10 Seiten)</h3>
+                <ul>
+                    <li>2.1 Event-Driven Architecture (EDA)
+                        <ul>
+                            <li>2.1.1 Konzepte und Prinzipien</li>
+                            <li>2.1.2 Event Types (Domain Events, Integration Events)</li>
+                            <li>2.1.3 Event Streaming vs. Message Queuing</li>
+                        </ul>
+                    </li>
+                    <li>2.2 Message Broker und Event Streaming
+                        <ul>
+                            <li>2.2.1 Apache Kafka Architecture</li>
+                            <li>2.2.2 RabbitMQ und AMQP</li>
+                            <li>2.2.3 Vergleich der Technologien</li>
+                        </ul>
+                    </li>
+                    <li>2.3 Saga Pattern und verteilte Transaktionen</li>
+                </ul>
+                
+                <h3>3. Orchestrierung Pattern (6-8 Seiten)</h3>
+                <ul>
+                    <li>3.1 Definition und Konzepte</li>
+                    <li>3.2 Workflow-Engines im Detail
+                        <ul>
+                            <li>3.2.1 Camunda Platform</li>
+                            <li>3.2.2 Temporal</li>
+                            <li>3.2.3 Apache Airflow</li>
+                        </ul>
+                    </li>
+                    <li>3.3 Implementierungsmuster</li>
+                    <li>3.4 Vor- und Nachteile</li>
+                </ul>
+                
+                <h3>4. Choreografie Pattern (6-8 Seiten)</h3>
+                <ul>
+                    <li>4.1 Definition und Konzepte</li>
+                    <li>4.2 Event-basierte Kommunikation</li>
+                    <li>4.3 Domain Events und Event Sourcing</li>
+                    <li>4.4 Implementierungsmuster</li>
+                    <li>4.5 Vor- und Nachteile</li>
+                </ul>
+                
+                <h3>5. Praktische Fallstudie (15-20 Seiten)</h3>
+                <ul>
+                    <li>5.1 Use Case: E-Commerce Bestellprozess
+                        <ul>
+                            <li>5.1.1 Fachliche Anforderungen</li>
+                            <li>5.1.2 Technische Anforderungen</li>
+                        </ul>
+                    </li>
+                    <li>5.2 Implementierung mit Choreografie
+                        <ul>
+                            <li>5.2.1 Service-Architektur</li>
+                            <li>5.2.2 Event-Flow</li>
+                            <li>5.2.3 Code-Implementierung</li>
+                        </ul>
+                    </li>
+                    <li>5.3 Implementierung mit Orchestrierung
+                        <ul>
+                            <li>5.3.1 Workflow-Definition</li>
+                            <li>5.3.2 Service-Integration</li>
+                            <li>5.3.3 Code-Implementierung</li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <h3>6. Evaluation und Vergleich (10-12 Seiten)</h3>
+                <ul>
+                    <li>6.1 Qualitative Evaluation
+                        <ul>
+                            <li>6.1.1 Änderbarkeit</li>
+                            <li>6.1.2 Wartbarkeit</li>
+                            <li>6.1.3 Verfügbarkeit</li>
+                            <li>6.1.4 Fehlertoleranz</li>
+                            <li>6.1.5 Erweiterbarkeit</li>
+                        </ul>
+                    </li>
+                    <li>6.2 Quantitative Evaluation
+                        <ul>
+                            <li>6.2.1 Performance-Metriken</li>
+                            <li>6.2.2 Skalierungsverhalten</li>
+                            <li>6.2.3 Ressourcenverbrauch</li>
+                        </ul>
+                    </li>
+                    <li>6.3 Chaos Engineering Tests</li>
+                </ul>
+                
+                <h3>7. Fazit und Empfehlungen (3-4 Seiten)</h3>
+                <ul>
+                    <li>7.1 Zusammenfassung der Ergebnisse</li>
+                    <li>7.2 Entscheidungsmatrix</li>
+                    <li>7.3 Best Practices</li>
+                    <li>7.4 Ausblick</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Recherche Tab -->
+        <div id="research" class="content">
+            <div class="section">
+                <h2>🔍 Optimierte Recherche-Queries für Perplexity</h2>
+                <p style="margin-bottom: 20px;">Klicke auf die Queries, um sie zu kopieren:</p>
+                
+                <h3>Grundlagen & Theorie</h3>
+                <div class="research-query" onclick="copyToClipboard('Choreography vs Orchestration event-driven architecture 2024 comparison advantages disadvantages')">
+                    <strong>Grundlegende Unterschiede:</strong>
+                    "Choreography vs Orchestration event-driven architecture 2024 comparison advantages disadvantages"
+                </div>
+                
+                <div class="research-query" onclick="copyToClipboard('Saga pattern implementation choreography orchestration distributed transactions compensation')">
+                    <strong>Saga Pattern:</strong>
+                    "Saga pattern implementation choreography orchestration distributed transactions compensation"
+                </div>
+                
+                <h3>Technologie & Tools</h3>
+                <div class="research-query" onclick="copyToClipboard('Camunda vs Temporal vs Apache Airflow orchestration engine comparison 2024')">
+                    <strong>Orchestrierungs-Engines:</strong>
+                    "Camunda vs Temporal vs Apache Airflow orchestration engine comparison 2024"
+                </div>
+                
+                <div class="research-query" onclick="copyToClipboard('Apache Kafka event choreography implementation best practices production')">
+                    <strong>Kafka für Choreografie:</strong>
+                    "Apache Kafka event choreography implementation best practices production"
+                </div>
+                
+                <h3>Industrie-Beispiele</h3>
+                <div class="research-query" onclick="copyToClipboard('Netflix microservices choreography event-driven architecture case study')">
+                    <strong>Netflix Architecture:</strong>
+                    "Netflix microservices choreography event-driven architecture case study"
+                </div>
+                
+                <div class="research-query" onclick="copyToClipboard('Uber microservices orchestration Cadence workflow engine implementation')">
+                    <strong>Uber's Cadence:</strong>
+                    "Uber microservices orchestration Cadence workflow engine implementation"
+                </div>
+                
+                <h3>Performance & Evaluation</h3>
+                <div class="research-query" onclick="copyToClipboard('Choreography vs orchestration performance comparison latency throughput scalability')">
+                    <strong>Performance-Vergleiche:</strong>
+                    "Choreography vs orchestration performance comparison latency throughput scalability"
+                </div>
+                
+                <div class="research-query" onclick="copyToClipboard('Chaos engineering event-driven architecture resilience testing failure scenarios')">
+                    <strong>Chaos Engineering:</strong>
+                    "Chaos engineering event-driven architecture resilience testing failure scenarios"
+                </div>
+                
+                <h3>Monitoring & Observability</h3>
+                <div class="research-query" onclick="copyToClipboard('Distributed tracing choreographed microservices Jaeger Zipkin OpenTelemetry')">
+                    <strong>Distributed Tracing:</strong>
+                    "Distributed tracing choreographed microservices Jaeger Zipkin OpenTelemetry"
+                </div>
+                
+                <div class="research-query" onclick="copyToClipboard('Event-driven architecture monitoring Prometheus Grafana metrics best practices')">
+                    <strong>Monitoring Setup:</strong>
+                    "Event-driven architecture monitoring Prometheus Grafana metrics best practices"
+                </div>
+            </div>
+        </div>
+        
+        <!-- Implementierung Tab -->
+        <div id="implementation" class="content">
+            <div class="section">
+                <h2>💻 Implementierungsdetails</h2>
+                
+                <h3>Use Case: E-Commerce Bestellprozess</h3>
+                <div class="success-box">
+                    <strong>Services zu implementieren:</strong>
+                    <ul>
+                        <li>Order Service - Bestellverwaltung</li>
+                        <li>Payment Service - Zahlungsabwicklung</li>
+                        <li>Inventory Service - Lagerbestand</li>
+                        <li>Shipping Service - Versand</li>
+                        <li>Notification Service - Benachrichtigungen</li>
+                    </ul>
+                </div>
+                
+                <h3>Choreografie-Implementierung</h3>
+                <div class="code-example">
+// Event: OrderPlaced
+{
+  "orderId": "uuid",
+  "customerId": "uuid",
+  "items": [...],
+  "totalAmount": 199.99,
+  "timestamp": "2025-01-15T10:00:00Z"
+}
+
+// Services reagieren autonom auf Events
+// Payment Service: Subscribes to OrderPlaced
+// Inventory Service: Subscribes to PaymentProcessed
+// Shipping Service: Subscribes to InventoryReserved
+                </div>
+                
+                <h3>Orchestrierungs-Implementierung</h3>
+                <div class="code-example">
+// BPMN Workflow in Camunda
+Start → Create Order → Process Payment → Reserve Inventory 
+      → Create Shipment → Send Notification → End
+
+// Orchestrator koordiniert alle Service-Aufrufe
+orchestrator.execute("orderWorkflow", orderData)
+                </div>
+                
+                <h3>Technologie-Stack</h3>
+                <div class="task-grid">
+                    <div class="task-card">
+                        <h4>🎼 Choreografie Stack</h4>
+                        <ul>
+                            <li>Apache Kafka / RabbitMQ</li>
+                            <li>Spring Boot (Java) / Node.js</li>
+                            <li>MongoDB / PostgreSQL</li>
+                            <li>Docker & Kubernetes</li>
+                            <li>Jaeger für Tracing</li>
+                        </ul>
+                    </div>
+                    <div class="task-card">
+                        <h4>🎺 Orchestrierung Stack</h4>
+                        <ul>
+                            <li>Camunda / Temporal</li>
+                            <li>Spring Boot (Java)</li>
+                            <li>PostgreSQL</li>
+                            <li>Docker & Kubernetes</li>
+                            <li>Camunda Cockpit für Monitoring</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h3>Testing-Strategie</h3>
+                <ul>
+                    <li><strong>Unit Tests:</strong> Für jeden Service</li>
+                    <li><strong>Integration Tests:</strong> Service-Kommunikation</li>
+                    <li><strong>End-to-End Tests:</strong> Kompletter Workflow</li>
+                    <li><strong>Performance Tests:</strong> JMeter/K6 für Lasttests</li>
+                    <li><strong>Chaos Tests:</strong> Service-Ausfälle simulieren</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Interaktives Element Tab -->
+        <div id="interactive" class="content">
+            <div class="section">
+                <h2>🎮 Interaktives Element: Event-Flow Visualizer</h2>
+                
+                <div class="success-box">
+                    <strong>Hauptidee:</strong> Ein interaktiver Web-Simulator, der beide Architekturen live demonstriert und vergleicht.
+                </div>
+                
+                <h3>Features des Event-Flow Visualizers</h3>
+                <div class="task-grid">
+                    <div class="task-card">
+                        <h4>🎨 Visuelle Darstellung</h4>
+                        <ul>
+                            <li>Animierter Event-Flow</li>
+                            <li>Service-Status in Echtzeit</li>
+                            <li>Message Queue Visualisierung</li>
+                            <li>Workflow-Fortschritt</li>
+                        </ul>
+                    </div>
+                    <div class="task-card">
+                        <h4>🔧 Interaktive Features</h4>
+                        <ul>
+                            <li>Start/Stop von Services</li>
+                            <li>Fehler-Injection</li>
+                            <li>Load-Simulation</li>
+                            <li>Pattern-Switching</li>
+                        </ul>
+                    </div>
+                    <div class="task-card">
+                        <h4>📊 Metriken Dashboard</h4>
+                        <ul>
+                            <li>Live Performance-Metriken</li>
+                            <li>Latenz-Vergleich</li>
+                            <li>Durchsatz-Analyse</li>
+                            <li>Error Rate Tracking</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h3>Technische Umsetzung</h3>
+                <div class="code-example">
+// React Component Structure
+├── EventFlowVisualizer
+│   ├── ChoreographyView
+│   │   ├── ServiceNode
+│   │   ├── EventBus
+│   │   └── MessageFlow
+│   ├── OrchestrationView
+│   │   ├── OrchestratorNode
+│   │   ├── ServiceNode
+│   │   └── WorkflowDiagram
+│   ├── MetricsDashboard
+│   └── ControlPanel
+                </div>
+                
+                <h3>Alternative: Decision Support Tool</h3>
+                <p>Ein interaktives Entscheidungstool, das basierend auf Projektanforderungen eine Empfehlung gibt:</p>
+                <ul>
+                    <li>Interaktiver Fragebogen zu Systemanforderungen</li>
+                    <li>Gewichtete Bewertung verschiedener Faktoren</li>
+                    <li>Radar-Chart Visualisierung der Ergebnisse</li>
+                    <li>Best Practice Empfehlungen</li>
+                    <li>Export als PDF-Report</li>
+                </ul>
+                
+                <h3>Demo-Szenarios</h3>
+                <div class="warning-box">
+                    <strong>Zu demonstrierende Szenarien:</strong>
+                    <ul>
+                        <li>Happy Path: Erfolgreiche Bestellung</li>
+                        <li>Payment Failure: Kompensation notwendig</li>
+                        <li>Service Ausfall: Resilience Testing</li>
+                        <li>High Load: Skalierungsverhalten</li>
+                        <li>Network Partition: Konsistenz-Test</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Checkliste Tab -->
+        <div id="checklist" class="content">
+            <div class="section">
+                <h2>✅ Projekt-Checkliste</h2>
+                
+                <div class="checklist">
+                    <h3>📚 Dokumentation</h3>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="doc1" onchange="toggleComplete(this)">
+                        <label for="doc1">Executive Summary geschrieben</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="doc2" onchange="toggleComplete(this)">
+                        <label for="doc2">Theoretische Grundlagen vollständig</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="doc3" onchange="toggleComplete(this)">
+                        <label for="doc3">Beide Pattern detailliert beschrieben</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="doc4" onchange="toggleComplete(this)">
+                        <label for="doc4">Evaluation qualitativ und quantitativ</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="doc5" onchange="toggleComplete(this)">
+                        <label for="doc5">Alle Quellen korrekt zitiert</label>
+                    </div>
+                </div>
+                
+                <div class="checklist">
+                    <h3>💻 Implementierung</h3>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="impl1" onchange="toggleComplete(this)">
+                        <label for="impl1">Choreografie-Prototyp funktionsfähig</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="impl2" onchange="toggleComplete(this)">
+                        <label for="impl2">Orchestrierungs-Prototyp funktionsfähig</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="impl3" onchange="toggleComplete(this)">
+                        <label for="impl3">Beide Prototypen funktional identisch</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="impl4" onchange="toggleComplete(this)">
+                        <label for="impl4">Docker-Container erstellt</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="impl5" onchange="toggleComplete(this)">
+                        <label for="impl5">Tests implementiert und dokumentiert</label>
+                    </div>
+                </div>
+                
+                <div class="checklist">
+                    <h3>📊 Evaluation</h3>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="eval1" onchange="toggleComplete(this)">
+                        <label for="eval1">Performance-Tests durchgeführt</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="eval2" onchange="toggleComplete(this)">
+                        <label for="eval2">Chaos-Tests durchgeführt</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="eval3" onchange="toggleComplete(this)">
+                        <label for="eval3">Metriken gesammelt und ausgewertet</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="eval4" onchange="toggleComplete(this)">
+                        <label for="eval4">Vergleichstabellen erstellt</label>
+                    </div>
+                </div>
+                
+                <div class="checklist">
+                    <h3>🎤 Präsentation</h3>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="pres1" onchange="toggleComplete(this)">
+                        <label for="pres1">Folien erstellt und überprüft</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="pres2" onchange="toggleComplete(this)">
+                        <label for="pres2">Demo vorbereitet und getestet</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="pres3" onchange="toggleComplete(this)">
+                        <label for="pres3">Zeitplan für Präsentation erstellt</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="pres4" onchange="toggleComplete(this)">
+                        <label for="pres4">Q&A vorbereitet</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function showTab(tabName) {
+            // Hide all content
+            const contents = document.querySelectorAll('.content');
+            contents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+        
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                // Visual feedback
+                const element = event.currentTarget;
+                const originalBg = element.style.background;
+                element.style.background = 'linear-gradient(135deg, #4ade8025 0%, #22c55e25 100%)';
+                element.style.borderLeft = '3px solid #22c55e';
+                
+                setTimeout(() => {
+                    element.style.background = originalBg;
+                    element.style.borderLeft = '3px solid #764ba2';
+                }, 1000);
+                
+                // Show temporary success message
+                const successMsg = document.createElement('span');
+                successMsg.textContent = ' ✓ Kopiert!';
+                successMsg.style.color = '#22c55e';
+                successMsg.style.fontWeight = 'bold';
+                element.appendChild(successMsg);
+                
+                setTimeout(() => {
+                    successMsg.remove();
+                }, 1500);
+            });
+        }
+        
+        function toggleComplete(checkbox) {
+            const item = checkbox.parentElement;
+            if (checkbox.checked) {
+                item.classList.add('completed');
+            } else {
+                item.classList.remove('completed');
+            }
+            
+            // Save state to localStorage
+            localStorage.setItem(checkbox.id, checkbox.checked);
+        }
+        
+        // Load saved checklist state
+        window.addEventListener('load', () => {
+            const checkboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                const saved = localStorage.getItem(checkbox.id);
+                if (saved === 'true') {
+                    checkbox.checked = true;
+                    checkbox.parentElement.classList.add('completed');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
