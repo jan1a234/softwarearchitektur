@@ -444,15 +444,16 @@
         </div>
         
         <div class="tabs">
-            <button class="tab active" onclick="showTab('overview')">📋 Überblick</button>
-            <button class="tab" onclick="showTab('requirements')">📑 Anforderungen</button>
-            <button class="tab" onclick="showTab('evaluation')">📊 Bewertungskriterien</button>
-            <button class="tab" onclick="showTab('timeline')">⏱️ Zeitplan</button>
-            <button class="tab" onclick="showTab('structure')">📚 Inhaltsverzeichnis</button>
-            <button class="tab" onclick="showTab('research')">🔍 Recherche-Queries</button>
-            <button class="tab" onclick="showTab('implementation')">💻 Implementierung</button>
-            <button class="tab" onclick="showTab('interactive')">🎮 Interaktives Element</button>
-            <button class="tab" onclick="showTab('checklist')">✅ Checkliste</button>
+            <button class="tab active" onclick="showTab('overview', this)">📋 Überblick</button>
+            <button class="tab" onclick="showTab('requirements', this)">📑 Anforderungen</button>
+            <button class="tab" onclick="showTab('evaluation', this)">📊 Bewertungskriterien</button>
+            <button class="tab" onclick="showTab('timeline', this)">⏱️ Zeitplan</button>
+            <button class="tab" onclick="showTab('structure', this)">📚 Inhaltsverzeichnis</button>
+            <button class="tab" onclick="showTab('research', this)">🔍 Recherche-Queries</button>
+            <button class="tab" onclick="showTab('tasks', this)">👥 Aufgabenverteilung</button>
+            <button class="tab" onclick="showTab('implementation', this)">💻 Implementierung</button>
+            <button class="tab" onclick="showTab('interactive', this)">🎮 Interaktives Element</button>
+            <button class="tab" onclick="showTab('checklist', this)">✅ Checkliste</button>
         </div>
         
         <!-- Überblick Tab -->
@@ -781,6 +782,179 @@
             </div>
         </div>
         
+        <!-- Aufgabenverteilung Tab -->
+        <div id="tasks" class="content">
+            <div class="section">
+                <h2>📋 Detaillierte Aufgabenverteilung (3 Personen)</h2>
+                
+                <div class="warning-box">
+                    <strong>⚠️ WICHTIG:</strong> Jede Person ist für ihre Hauptaufgaben verantwortlich, unterstützt aber auch bei den anderen Bereichen. Regelmäßige Abstimmung ist essentiell!
+                </div>
+                
+                <div class="task-grid">
+                    <div class="task-card">
+                        <h4>👤 Person 1: Orchestrierungs-Spezialist</h4>
+                        <h5 style="color: #764ba2;">Hauptverantwortlichkeiten:</h5>
+                        <ul>
+                            <li><strong>Woche 1:</strong> Recherche Orchestrierungs-Engines (Camunda, Temporal, Airflow)</li>
+                            <li><strong>Woche 2:</strong> Architektur-Design für Orchestrierung</li>
+                            <li><strong>Woche 3-4:</strong> Implementierung Orchestrierungs-Prototyp
+                                <ul>
+                                    <li>Workflow-Engine Setup</li>
+                                    <li>BPMN Workflow modellieren</li>
+                                    <li>Service-Integration</li>
+                                    <li>Fehlerbehandlung & Kompensation</li>
+                                </ul>
+                            </li>
+                            <li><strong>Woche 5:</strong> Performance-Tests Orchestrierung</li>
+                            <li><strong>Woche 6:</strong> Dokumentation Kapitel 3 (Orchestrierung)</li>
+                        </ul>
+                        <h5 style="color: #667eea;">Code-Verantwortung:</h5>
+                        <ul>
+                            <li>orchestration-service/</li>
+                            <li>workflows/</li>
+                            <li>docker-compose-orchestration.yml</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="task-card">
+                        <h4>👤 Person 2: Choreografie-Spezialist</h4>
+                        <h5 style="color: #764ba2;">Hauptverantwortlichkeiten:</h5>
+                        <ul>
+                            <li><strong>Woche 1:</strong> Recherche Event-Driven Patterns & Message Broker</li>
+                            <li><strong>Woche 2:</strong> Architektur-Design für Choreografie</li>
+                            <li><strong>Woche 3-4:</strong> Implementierung Choreografie-Prototyp
+                                <ul>
+                                    <li>Kafka/RabbitMQ Setup</li>
+                                    <li>Event-Publisher implementieren</li>
+                                    <li>Event-Handler für alle Services</li>
+                                    <li>Saga-Pattern umsetzen</li>
+                                </ul>
+                            </li>
+                            <li><strong>Woche 5:</strong> Performance-Tests Choreografie</li>
+                            <li><strong>Woche 6:</strong> Dokumentation Kapitel 4 (Choreografie)</li>
+                        </ul>
+                        <h5 style="color: #667eea;">Code-Verantwortung:</h5>
+                        <ul>
+                            <li>event-bus/</li>
+                            <li>services/*/events/</li>
+                            <li>docker-compose-choreography.yml</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="task-card">
+                        <h4>👤 Person 3: Integration & Evaluation</h4>
+                        <h5 style="color: #764ba2;">Hauptverantwortlichkeiten:</h5>
+                        <ul>
+                            <li><strong>Woche 1:</strong> Use Case Definition & Gemeinsame Services</li>
+                            <li><strong>Woche 2:</strong> API-Spezifikationen & Datenmodell</li>
+                            <li><strong>Woche 3-4:</strong> Gemeinsame Service-Implementierung
+                                <ul>
+                                    <li>Order Service</li>
+                                    <li>Payment Service</li>
+                                    <li>Inventory Service</li>
+                                    <li>Shipping Service</li>
+                                </ul>
+                            </li>
+                            <li><strong>Woche 5:</strong> Vergleichende Evaluation & Chaos-Tests</li>
+                            <li><strong>Woche 6:</strong> Interaktives Element & Kapitel 5,6 (Evaluation)</li>
+                        </ul>
+                        <h5 style="color: #667eea;">Code-Verantwortung:</h5>
+                        <ul>
+                            <li>services/order-service/</li>
+                            <li>services/payment-service/</li>
+                            <li>services/inventory-service/</li>
+                            <li>services/shipping-service/</li>
+                            <li>interactive-demo/</li>
+                            <li>test-suite/</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="section" style="margin-top: 30px; background: #e8f5e9;">
+                    <h3>🤝 Gemeinsame Aufgaben (ALLE)</h3>
+                    <div class="task-grid">
+                        <div class="task-card">
+                            <h4>📅 Wöchentliche Pflichten</h4>
+                            <ul>
+                                <li><strong>Montags 14:00:</strong> Sprint Planning (30 min)</li>
+                                <li><strong>Mittwochs 14:00:</strong> Stand-up (15 min)</li>
+                                <li><strong>Freitags 14:00:</strong> Code Review & Merge (45 min)</li>
+                            </ul>
+                        </div>
+                        <div class="task-card">
+                            <h4>📝 Dokumentation</h4>
+                            <ul>
+                                <li><strong>Person 1+2:</strong> Kapitel 1-2 (Grundlagen)</li>
+                                <li><strong>Person 2+3:</strong> Kapitel 7 (Technologie-Stack)</li>
+                                <li><strong>Person 1+3:</strong> Kapitel 8 (Best Practices)</li>
+                                <li><strong>ALLE:</strong> Executive Summary & Fazit</li>
+                            </ul>
+                        </div>
+                        <div class="task-card">
+                            <h4>🎤 Präsentation</h4>
+                            <ul>
+                                <li><strong>Person 1:</strong> Orchestrierung Demo (5 min)</li>
+                                <li><strong>Person 2:</strong> Choreografie Demo (5 min)</li>
+                                <li><strong>Person 3:</strong> Vergleich & Interaktive Demo (5 min)</li>
+                                <li><strong>ALLE:</strong> Q&A vorbereiten</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section" style="margin-top: 30px; background: #fff3e0;">
+                    <h3>📊 Arbeitsaufteilung in Prozent</h3>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: #667eea; color: white;">
+                                <th style="padding: 10px; border: 1px solid #ddd;">Bereich</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Person 1</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Person 2</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Person 3</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;"><strong>Recherche</strong></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">35%</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">35%</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">30%</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;"><strong>Implementierung</strong></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">30%</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">30%</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">40%</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;"><strong>Testing</strong></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">30%</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">30%</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">40%</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;"><strong>Dokumentation</strong></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">33%</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">33%</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">34%</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;"><strong>Präsentation</strong></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">33%</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">33%</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">34%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="deadline" style="margin-top: 30px;">
+                    ⚠️ KRITISCH: Peer Review muss JEDER selbstständig durchführen (100% Eigenleistung)!
+                </div>
+            </div>
+        </div>
+        
         <!-- Recherche Tab -->
         <div id="research" class="content">
             <div class="section">
@@ -1100,7 +1274,7 @@ orchestrator.execute("orderWorkflow", orderData)
     </div>
     
     <script>
-        function showTab(tabName) {
+        function showTab(tabName, element) {
             // Hide all content
             const contents = document.querySelectorAll('.content');
             contents.forEach(content => {
@@ -1114,10 +1288,21 @@ orchestrator.execute("orderWorkflow", orderData)
             });
             
             // Show selected content
-            document.getElementById(tabName).classList.add('active');
+            const selectedContent = document.getElementById(tabName);
+            if (selectedContent) {
+                selectedContent.classList.add('active');
+            }
             
-            // Add active class to clicked tab
-            event.target.classList.add('active');
+            // Add active class to clicked tab if element is provided
+            if (element) {
+                element.classList.add('active');
+            } else {
+                // Fallback: find the button that matches the tabName
+                const activeTab = document.querySelector(`[onclick*="showTab('${tabName}"]`);
+                if (activeTab) {
+                    activeTab.classList.add('active');
+                }
+            }
         }
         
         function copyToClipboard(text) {
